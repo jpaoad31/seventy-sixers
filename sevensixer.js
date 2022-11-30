@@ -1,70 +1,52 @@
-let parray = []; // stores probability for n
-parray[0] = 1;
-let iterations = 0;
+/**
+ * Author: John Adams
+ * Email: jpadams@ucsd.edu
+ * Date: November 29, 2022
+ * Association: Univeristy of California, San Diego
+ * 
+ * This is a short function written as part of a homework
+ * assignment in one of my classes. I wanted to turn this
+ * into a web app because I needed another excuse not to
+ * actually work on my homework.
+ */
 
-console.log(prob(7));
-console.log(`ran in ${iterations} iterations`);
+/**
+ * Probability returns the probability of winning a game of
+ * seventy sixers. The rules are as follows. You pay $1 to
+ * enter, this goes into the pot. You get n dice, and you
+ * get to roll them all. All dice that rolled 6 are set
+ * aside and you continue to roll the remaining dice until:
+ * 1) you roll 6 on all dice and win the pot or
+ * 2) you have no 6's on any of the rolled dice and you lose
+ * @param {number} input 
+ * @returns 
+ */
+function probability(input) {
 
-function prob(input) {
-    // this loop counts up to index n
+    let probabilityArray = [1];         // store probabilities for P[i]
+    let iterations = 0;                 // track how fast this algorithm is
+
+    /**
+     * outer loop calculates probability
+     * for P[n] from 1 to the input value
+     */
     for(let n = 1; n <= input; n++) {
-        let sum = 0;
+
+        let sum = 0;                    // continuous sum over the inner loop
+
+        /**
+         * inner loop sums up probability
+         * given every possible combination
+         * of dice rolls
+         */
         for (let i = 0; i < n; i++) {
-            sum += power(1/6, n-i) * power(5/6, i) * binom(n, i) * parray[i];
+            sum +=  power(1/6, n-i) *   // probability of getting 6 on n-i dice
+                    power(5/6, i) *     // probability of not getting 6 on other i dice
+                    binom(n, i) *       // number of ways to choose i dice out of n
+                    probabilityArray[i];// 
             iterations ++;
         }
-        parray[n] = sum; // store the probability for n
+        probabilityArray[n] = sum; // store the probability for n
     }
-    return parray[input];
-}
-
-/**
- * Calculate the binomial distribution for n \choose i
- * @param {number} n 
- * @param {number} i 
- * @returns n \choose i
- */
-function binom(n, i) {
-    if (i > n) return 1;
-    if (n == 0) return 1;
-    if (n == i) return 1;
-
-    let ni = n - i;
-
-    binomial = factorial(n) / (factorial(i) * factorial(ni));
-    
-    return binomial;
-}
-
-/**
- * Calculate the factorial of n
- * @param {number} n 
- * @returns n!
- */
-function factorial(n) {
-    let factorial = 1;
-
-    for (let i = 1; i <= n; i++) {
-        factorial = factorial * i;
-    }
-
-    return factorial;
-}
-
-/**
- * Calculate x to the power n
- * @param {number} x base
- * @param {number} n factor
- * @returns x^n
- */
-function power(x, n) {
-    if (n == 0) return 1;
-
-    let power = 1;
-
-    for(let i = 0; i < n; i++) {
-        power = power * x;
-    }
-    
-    return power;
+    return probabilityArray[input];
 }
