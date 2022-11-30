@@ -24,7 +24,7 @@ function binom(objects, choose) {
     if (objects == 0) return 1;
     if (objects == choose) return 1;
 
-    binomial = factorial(objects) / (factorial(choose) * factorial(object - choose));
+    let binomial = factorial(objects) / (factorial(choose) * factorial(objects - choose));
     
     return binomial;
 }
@@ -61,3 +61,5 @@ function power(base, exponent) {
     
     return power;
 }
+
+export {binom, factorial, power};
